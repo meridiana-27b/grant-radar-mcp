@@ -1,0 +1,154 @@
+=== grant-radar scan --min-reward 1000 (live, 2026-09-07) ===
+scanned=800 | accepting >= $1000: 8 (with deadline 0, no-deadline 8)
+    Circle 2026 Cohort 2                                                     | $1000 USD      | apps=1    | Circle 2026 Cohort 2         | nets=chain_10  | dl=no-dl      | payout=milestones review=voting
+    Agent Launch Flash Grants                                                | $10000 USD     | apps=46   | Agent Launch Flash Grants    | nets=chain_10  | dl=no-dl      | payout=in_one_go review=rubrics
+    AId                                                                      | $10000 USD     | apps=0    | AId                          | nets=chain_10  | dl=no-dl      | payout=milestones review=
+    Educational content grant                                                | $1600 USD      | apps=2    | Educational content grant    | nets=chain_10  | dl=no-dl      | payout=in_one_go review=
+    Circle 2026 Cohort 2                                                     | $100000 USDC   | apps=684  | Circle Grants Program        | nets=chain_10  | dl=no-dl      | payout=milestones review=voting
+    protocol integrations and privacy ZK-on sui                              | $95000 USD     | apps=1    | protocol integrations and pr | nets=chain_10  | dl=no-dl      | payout=milestones review=voting
+    Evidence verification tooling                                            | $30000 USD     | apps=3    | Evidence verification toolin | nets=chain_10  | dl=no-dl      | payout=in_one_go review=voting
+    Yield aggregation and settlement on Arbitrum                             | $28000 USD     | apps=2    | Yield aggregation and settle | nets=chain_10  | dl=no-dl      | payout=milestones review=rubrics
+
+=== grant-radar summary 6a20159722bc41779bac6752 (Agent Launch Flash Grants, live) ===
+states: {'approved': 5, 'submitted': 41}
+
+--- state=approved (5) ---
+* OpenPlanet Heat-Risk MCP Server & Agent
+   TLDR : Reusable MCP server & uAgent returning peer-reviewed heat-death and adaptation-ROI forecasts for 8,000+ cities.
+   MST  : Open-source release of the OpenPlanet MCP Server & live Heat-Risk Agent deployme
+* Agent J x ASI Meetup @ 4Seas
+   TLDR : Host a meetup about designing, building, and deploying community manager agents and
+   MST  : Presentation made
+* ClipMind
+   TLDR : AI agent that goes viral, earns on Whop, buys back its token. Fetch.ai's flagship.
+   MST  : Earning from Whop and Posting on X (twitter)
+* Whop Agent Payment Gateway: x402ÔÇæCompatible Adapter for AgentÔÇæGenerated Revenue
+   TLDR : Universal x402 payment adapter that lets any AI agent accept payments via Whop and route revenue into onÔÇæchain buybacks,
+   MST  : OpenÔÇæsource release of @whop-x402 v1.0.0. 
+* Agentverse Fleet Starter Kit v2: Memory, Deploy Bundles and Docs
+   TLDR : Upgrade our open uAgents fleet into a reusable Agentverse kit with memory, deploy bundles, tests and builder docs.
+   MST  : Release Agentverse Fleet Starter Kit v2 (public, MIT, tested, deployable)
+
+--- state=submitted (41) ---
+* Veridex Protocol: Bounded Payments & Compliance Gateways for Fetch.ai Agents
+   TLDR : Passkey delegation and smart contract session keys securing autonomous payments for Fetch.ai agents on BNB Chain.
+   MST  : @veridex/fetch-adapter Launch & BSC Testnet Integration Demo
+* Pay-to-Trace Agent: BSC fund-flow reports via uAgent + reusable MCP payment rail
+   TLDR : Hosted Trace Agent on Agentverse + open MCP. Any agent pays USDC on BSC to get instant Tracefunds fund-flow reports.
+   MST  : Trace Agent live on Agentverse (tokenized) + public MCP + reusable BSC USDC pay-
+* Due Diligence MCP Server for Agentverse ÔÇö Web3 Risk Analysis Infrastructure
+   TLDR : I'm building a hosted MCP server that exposes Web3 due diligence as a reusable tool for Agentverse.
+   MST  : Due Diligence MCP Server ÔÇö 3 tools operational, tested against real projects, Do
+* Attested-Reasoning uAgent: on-chain proof-of-reasoning for Agentverse agents
+   TLDR : A uAgent whose every forecast is bonded on-chain (commitÔåÆrevealÔåÆslash). Trustless reasoning, queryable from Agentverse.
+   MST  : Open-source release of the Attested-Reasoning uAgent v1.0.0 + first fully attest
+* AgentRep: On-Chain Reputation Ledger for Agentverse Agents
+   TLDR : uAgent that lets any Agentverse agent log verified on-chain events and query a structured trust score ÔÇö accountability i
+   MST  : AgentRep v0.1 ÔÇö Live on Agentverse with Verified Demo
+* Agent Launch Checklist uAgent
+   TLDR : A uAgent that automatically validates whether an Agentverse agent is truly ready to launch ÔÇö checking Almanac registrati
+   MST  : Open-Source Release of Agent Launch Checklist uAgent v1.0
+* BSC Token Intelligence Agent. On-Chain Metadata for Agentverse
+   TLDR : A reusable agent that reads BEP-20 token metadata and prices directly from BSC contracts and PancakeSwap V3 pools.
+   MST  : Deployed agent on Agentverse with on-chain token reads and PancakeSwap V3 price 
+* LaunchScan ÔÇö the explorer for the Agent Launch economy
+   TLDR : Open-source explorer for Agent Launch: live curve progress to 30k FET graduation, queryable by humans and agents.
+   MST  : LaunchScan v1.0 live and verifiable 
+* Agent Launch Flash Grants
+   TLDR : My proposal is to build Clip Mind as a full autonomous AI agent system that handles trend analysis, viral content creati
+   MST  : MVP Agent Core
+* AgentWatch: Open-Source CLI Observability & Event-Streaming SDK for uAgents
+   TLDR : A lightweight, zero-dependency npm SDK that intercepts internal uAgent states, cross-agent messages, and financial event
+   MST  : v1.0.0 Core SDK Release & Agentverse Live Verification
+* SignalWeave
+   TLDR : AI that turns fragmented online noise into actionable ÔÇ£signalsÔÇØ then automatically builds, tests and deploys strategies
+   MST  : Milestone: Signal Detection + Live Opportunity Execution Engine
+* AgentPay Guardian
+   TLDR : AgentPay Guardian is an autonomous monitoring agent that prevents revenue leakage by continuously auditing x402 payments
+   MST  : Real-Time x402 Payment Monitoring MVP
+* Agent Launch Use Case Library
+   TLDR : A public library of AI agent use cases to inspire, guide, and onboard new builders into Agent Launch ecosystem.
+   MST  : Agent Use Case Library Development & Publication
+* Alpha Forge
+   TLDR : Alpha Forge is an autonomous multi-agent AI system that discovers emerging crypto opportunities, generates actionable ma
+   MST  : Alpha Forge MVP Launch
+* OnchainData MCP: The Wallet Intelligence Layer for Autonomous AI AgentsOnchainDa
+   TLDR : OnchainData MCP is an MCP-compatible wallet intelligence server that enables AI agents to securely access BNB Chain bala
+   MST  : Milestone: Launch a Functional OnchainData MCP MVP
+* Polyseer: The Polymarket Oracle Agent
+   TLDR : Polyseer is a live uAgent on Agentverse that turns Polymarket into a conversation: ask for odds, calibrated forecast
+   MST  : Enhancement Pack
+* Proof-of-Buyback
+   TLDR : Verifies any Agent Launch token's buybacks on-chain and serves a queryable proof feed via MCP + uAgent on ASI:One.
+   MST  : Roadmap (single milestone, ~3 weeks)
+* VynTone
+   TLDR : vynTone is an autonomous voice-cloning agent ÔÇö built on a custom FastSpeech2 and ECAPA-TDNN voice synthesis pipeline ÔÇö
+   MST  : VynTone Agent Deployment & Launch Readiness (Weeks 1ÔÇô5)
+* Robo DeFi Advisor
+   TLDR : RDA combines Fetch.ai agents and deterministic logic to automate DeFi opportunity discovery while keeping humans in loop
+   MST  : Advanced Decision Intelligence & Ecosystem Expansion
+* Agent Launch Buildstation Bhopal
+   TLDR : To transition Central India's top developers into the ASI ecosystem via a live Agentverse deployment sprint.
+   MST  : Milestone 1: Agent Launch Builder Sprint - Central India
+* Vietnamese-Language Educational Content Series for Agent Launch
+   TLDR : Aiming to strengthen Vietnamese's knowledge about Agent Launch with enjoyable reading materials.
+   MST  : Vietnamese-Language Agent Launch Educational Content Series + Community Distribu
+* LexProtocol ÔÇö Legal Compliance AI Agents for Web3 Protocols
+   TLDR : LexProtocol deploys 100 Claude-powered legal AI agents on Fetch.AI AgentVerse to provide legal opinions, contract attestation, and compliance monitoring for Web3.
+   MST  : Enhanced AgentVerse Integration ÔÇö Publish 100 LexProtocol legal AI agents on Fet
+* @agentlaunch/uagents-tg-gateway: Open-Source Webhook & Telegram State Alert SDK
+   TLDR : An open-source TypeScript SDK giving Fetch.ai agents on BNB Chain instant webhook and Telegram alerts for balances, laun
+   MST  : Public Repository Launch & Verified BSC Testnet E2E Demo
+* Evorozen 100-Day Incubator: Onboarding South Asia's Dev Army to Agent Launch
+   TLDR : Funding Phase 1 of a massive 100-Day Hackathon to onboard 50+ elite devs to build AI agents on Agent Launch.
+   MST  : Phase 1: Mobilizing the Elite Dev Army & Launching the Exclusive Fetch.ai Track 
+* CYANOS ÔÇô AI Agent Commerce Infrastructure
+   TLDR : AI agents for autonomous commerce, negotiation, and cross-border payments powered by Fetch.ai and blockchain.
+   MST  : Build and deploy the CYANOS AI Agent MVP on Fetch.ai
+* Open-Source Agent Launch uAgent Starter Kit
+   TLDR : A clone-ready Python template for building, testing, and deploying ASI agents in the Agent Launch ecosystem.
+   MST  : Publish and validate the Agent Launch uAgent Starter Kit
+* uagent-testkit ÔÇö a test harness for Fetch.ai uAgents on BNB Chain
+   TLDR : Pytest harness for Fetch.ai uAgents: test agent handlers and BNB Chain reads offline. Shipped on PyPI.
+   MST  : uagent-testkit v0.2 ÔÇö Agent Launch fixtures, scheduler simulation, and documenta
+* Agent Launch T├╝rkiye ÔÇö Builder Education and Onboarding Series
+   TLDR : Agent Launch T├╝rkiye is a Turkish-language X content and builder onboarding campaign designed to introduce qualified Web
+   MST  : Agent Launch T├╝rkiye Builder Campaign
+* ?
+   MST  : x402 BNB Chain adapter + security guardrails + reference MCP server (BSC testnet
+* Agentic Finance Network: Multi-Agent Financial Intelligence for Fetch.ai
+   TLDR : Open-source Fetch.ai uAgents infrastructure for autonomous financial agents, risk analysis, and coordinated workflows.
+   MST  : Release Agentic Finance Network Infrastructure MVP v1.0
+* Autonomous Vehicle Intelligence for Agentverse: Mobility AI Infrastructure
+   TLDR : Deploy MAVERY AVIA as reusable Agentverse infrastructure for autonomous vehicle intelligence with persistent memory.
+   MST  : Transform MAVERY AVIA into a production-ready Agentverse deployment with persist
+* Vionix AI Layer for Web & Live chat with Telegram routing
+   TLDR : Vionix AI is an autonomous, web-based AI Agent layer that dynamically guides site visitors using RAG technology and rout
+   MST  : Vionix AI Infrastructure, Client Dashboard & Fetch.ai/BNB Chain Ecosystem Launch
+* Agentverse Skills Invocation Integrity Patch
+   TLDR : Fail-closed relay patch for Agentverse Skills to reject stale or unproven invocation results.
+   MST  : Complete invocation-integrity hardening for relay-based Agentverse Skills
+* Autonomous Biometric Risk Agent & Cross-Chain TEE Identity Engine
+   TLDR : Autonomous AI risk agent enabling TEE biometric key derivation & un-linkable DIDs for cross-chain Web3 execution.
+   MST  : Open-Source Smart Contract Verifiers & Fetch.ai uAgent SDK Release
+* agent-launch-pay: AI Agent Payment Infrastructure
+   TLDR : Open-source SDK and MCP server enabling AI agents to make and verify BNB Chain payments.
+   MST  : Public Agent Payment Infrastructure Release
+* Agent Control Developer Kit: installable SDK and MCP server for agent builders
+   TLDR : Publish Ryntra's public Apache-2.0 agent evidence kit as an installable package with a quickstart any builder can run.
+   MST  : Publish the Agent Control Developer Kit as an installable, semantically versione
+* agentlaunch-py: Python client for Agent Launch + uAgents integration
+   TLDR : Agent Launch's SDK stack is TypeScript-only. uAgents is Python. agentlaunch-py closes that gap: 22 endpoints + uAgents.
+   MST  : agentlaunch-py v0.1.0 public + released
+* agentlaunch-py: Python client for Agent Launch + uAgents integration
+   TLDR : Agent Launch's SDK stack is TypeScript-only. uAgents is Python. agentlaunch-py closes that gap: 22 endpoints + uAgents.
+   MST  : agentlaunch-py v0.1.0 public + released
+* Equxi: Trust Layer for AI Agents
+   TLDR : Open-source bonding, rule enforcement, and slashing infrastructure for autonomous AI agents on BNB Chain
+   MST  : Deploy Equxi trust contract on BNB Chain + release cross-chain SDK with Agent La
+* GlobalPay ÔÇö Production AI Agent Payment Infrastructure for Fetch.AI
+   TLDR : Production-ready payment platform giving AI agents wallets, marketplace, and on-chain settlement .
+   MST  : Deploy GlobalPay on BNB Chain with 5 strategic features: HTTP 402 payment standa
+* x402 + MCP adapter: Agent Launch agents unlock sealed work
+   TLDR : Ship a reusable open-source x402/MCP adapter so Agent Launch agents can pay and unlock sealed handoffs instead of reburn
+   MST  : Ship Agent LaunchÔÇôready x402/MCP unlock adapter + public smoke report
