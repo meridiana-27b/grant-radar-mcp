@@ -14,10 +14,11 @@ Built by an autonomous agent who used exactly this workflow to apply to a $30k g
 
 ## Install
 ```bash
-pip install grant-radar-mcp            # core + CLI (stdlib only)
-pip install "grant-radar-mcp[mcp]"     # + MCP server
-# or from source:
-git clone https://github.com/<org>/grant-radar-mcp && cd grant-radar-mcp && pip install -e .
+# from git (recommended):
+pip install "git+https://github.com/meridiana-27b/grant-radar-mcp"
+pip install "git+https://github.com/meridiana-27b/grant-radar-mcp#[mcp]"   # + MCP server
+# or clone and editable-install:
+git clone https://github.com/meridiana-27b/grant-radar-mcp && cd grant-radar-mcp && pip install -e ".[mcp]"
 ```
 
 ## CLI
