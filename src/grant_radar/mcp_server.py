@@ -29,11 +29,16 @@ except ImportError as e:  # pragma: no cover - optional extra missing
 
 from . import __version__
 import grant_radar.core as core  # module ref: tool function names shadow the imported ones
+from grant_radar import radar as _radar
+from grant_radar.sources import github_bounties as _gh
 
 mcp = FastMCP("grant-radar", instructions=(
-    "Funding radar for AI agents on Questbook grant programs. Zero credentials required: "
-    "scan currently-accepting grants, read full RFP detail (fields/rubric/program doc), and "
-    "pull every competitor application with its state (approved/submitted) to analyze what wins."
+    "Funding radar for AI agents. Zero credentials required for reads. Two layers: "
+    "(1) Questbook grant intelligence - scan accepting grants, read full RFP detail "
+    "(fields/rubric/program doc), pull every competitor application with its state "
+    "(approved/submitted) to analyze what wins; (2) multi-source breadth - GitHub paid "
+    "bounties (with repo credibility verdicts that filter out scam bounty-farms), Daydreams "
+    "tasks, plus a diff-based watch mode for scheduled agents."
 ))
 
 
@@ -85,6 +90,59 @@ def competitive_summary(grant_id: str, limit: int = 50) -> str:
     profile of approved proposals before writing your own application.
     """
     return _j(core.competitive_summary(grant_id=grant_id, limit=limit))
+
+
+@mcp.tool()
+def scan_all_opportunities(min_usd: float = 100.0,
+                           sources: str = "questbook,github,daydreams",
+                           verify_github: bool = True) -> str:
+    """Multi-source funding scan returning one normalized, ranked opportunity list.
+
+    Sources: 'questbook' (grant programs, tickets usually >= $500), 'github' (paid OSS
+    bounties - no committee, paid on merge), 'daydreams' (small tasks). Returns rows with
+    {source,url,title,usd,currency,competition,deadline,next_step,score} plus a
+    `skipped_farms` list of repos rejected as fake bounty boards. Set verify_github=False
+    only if you accept the risk of ranking scam pools - the check is the value.
+    """
+    srcs = [s.strip() for s in sources.split(",") if s.strip()]
+    return _j(_radar.scan_all(min_usd=min_usd, sources=srcs, verify_github=verify_github))
+
+
+@mcp.tool()
+def watch_opportunities(min_usd: float = 100.0,
+                        sources: str = "questbook,github,daydreams") -> str:
+    """Diff against the previous scan and report ONLY newly-appeared opportunities.
+
+    Idempotent by URL and stateless between calls except for a small JSON state file, so an
+    agent can call this on every heartbeat/cron and stay silent until real new money shows
+    up. Returns {new_count,new,total_now,tracked,skipped_farms}.
+    """
+    srcs = [s.strip() for s in sources.split(",") if s.strip()]
+    return _j(_radar.watch(min_usd=min_usd, sources=srcs))
+
+
+@mcp.tool()
+def github_bounties(min_usd: float = 100.0, max_repos: int = 12, verify: bool = True) -> str:
+    """Open paid bounties on GitHub (Algora 'Bounty' label, label:bounty, 'bounty' in title).
+
+    Each repo gets a credibility verdict from public signals (merged PRs, contributors,
+    stars, repo age, payout history, self-declared scam language) and pools failing the
+    screen are returned separately in `skipped_farms` with the reason. This matters: on
+    2026-09-13 the two largest headline bounty pools on GitHub ($104k and $18k) were both
+    farms with zero merged PRs. Optional auth via GITHUB_AGENT_PAT raises rate limits.
+    """
+    return _j(_gh.list_bounties(min_usd=min_usd, max_repos=max_repos, verify=verify))
+
+
+@mcp.tool()
+def repo_credibility(repo: str) -> str:
+    """Is a GitHub repo actually paying for bounties? Public-health check on one repo.
+
+    Returns merged-PR count, contributor count, stars, age, owner type, closed bounty
+    issues, scam-language signals and a verdict: 'real' | 'maybe' | 'farm' | 'unknown'.
+    Run this before spending hours on any bounty issue.
+    """
+    return _j(_gh.repo_health(repo))
 
 
 def main() -> None:

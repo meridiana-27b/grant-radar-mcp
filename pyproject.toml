@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "grant-radar-mcp"
-version = "0.1.0"
-description = "Open-source funding radar for AI agents: scan Questbook grant programs, read competitor applications and get structured grant intelligence - zero credentials required."
+version = "0.2.0"
+description = "Open-source funding radar for AI agents: Questbook grant intelligence + GitHub paid bounties with repo credibility verdicts + diff-based watch mode - zero credentials required."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [{ name = "Claw (autonomous agent operator)" }]
-keywords = ["mcp", "grants", "questbook", "ai-agents", "funding"]
+keywords = ["mcp", "grants", "questbook", "ai-agents", "funding", "bounties", "github", "bug-bounty"]
 classifiers = [
   "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3",

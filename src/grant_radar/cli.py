@@ -22,6 +22,8 @@ for _s in (sys.stdout, sys.stderr):
 
 from . import __version__
 from .core import applications, competitive_summary, grant_detail, scan_grants
+from .radar import scan_all, watch
+from .sources import github_bounties
 
 
 def _ts(s) -> str:
@@ -74,10 +76,78 @@ def main(argv: list[str] | None = None) -> int:
     c.add_argument("--limit", type=int, default=50)
     c.add_argument("--json", action="store_true")
 
+    r = sub.add_parser("radar", help="multi-source opportunity list (Questbook + GitHub bounties + Daydreams)")
+    r.add_argument("--min", type=float, default=100.0, help="minimum USD ticket")
+    r.add_argument("--sources", default="questbook,github,daydreams")
+    r.add_argument("--no-verify", action="store_true", help="skip GitHub repo credibility check (faster, unsafe)")
+    r.add_argument("--json", action="store_true")
+
+    w = sub.add_parser("watch", help="diff vs last scan: report only NEW opportunities (for schedulers)")
+    w.add_argument("--min", type=float, default=100.0)
+    w.add_argument("--sources", default="questbook,github,daydreams")
+    w.add_argument("--state", default=None, help="state file path (default ~/.grant-radar/watch-state.json)")
+    w.add_argument("--no-verify", action="store_true")
+    w.add_argument("--json", action="store_true")
+
+    gb = sub.add_parser("gh-bounties", help="GitHub paid bounties with repo credibility verdicts")
+    gb.add_argument("--min", type=float, default=100.0)
+    gb.add_argument("--max-repos", type=int, default=12)
+    gb.add_argument("--no-verify", action="store_true")
+    gb.add_argument("--json", action="store_true")
+
     args = p.parse_args(argv)
 
     try:
-        if args.cmd == "scan":
+        if args.cmd == "radar":
+            srcs = [s.strip() for s in args.sources.split(",") if s.strip()]
+            res = scan_all(min_usd=args.min, sources=srcs, verify_github=not args.no_verify)
+            if args.json:
+                print(json.dumps(res, indent=1))
+            else:
+                print(f"{res['total']} opportunities | pool ${res['pool_usd']:,.0f} "
+                      f"| sources={','.join(res['sources'])} | {res['scanned_at']}")
+                for x in res["opportunities"][:40]:
+                    dl = x.get("deadline") or "no-dl"
+                    print(f"  ${x['usd']:>8,.0f} {x['currency']:<4} sc={x['score']:>8.1f} "
+                          f"c={str(x.get('competition')):<4} {x['source']:<9} {dl:<10} "
+                          f"{x['title'][:56]}")
+                    print(f"           {x['url']}")
+                if res["skipped_farms"]:
+                    print(f"\nskipped as bounty-farms ({len(res['skipped_farms'])}):")
+                    for f in res["skipped_farms"]:
+                        print(f"  ${f['headline_pool_usd']:>9,.0f} {f['repo'][:44]:<46} "
+                              f"{f['issues']} issues - {f['why'][:60]}")
+                for n in res["notes"]:
+                    print("note:", n)
+        elif args.cmd == "watch":
+            srcs = [s.strip() for s in args.sources.split(",") if s.strip()]
+            res = watch(min_usd=args.min, sources=srcs, state_path=args.state,
+                        verify_github=not args.no_verify)
+            if args.json:
+                print(json.dumps(res, indent=1))
+            else:
+                print(f"NEW={res['new_count']} | tracked={res['tracked']} "
+                      f"| total_now={res['total_now']} | state={res['state_path']}")
+                for x in res["new"][:40]:
+                    print(f"  ${x['usd']:>8,.0f} {x['source']:<9} {x['title'][:60]}")
+                    print(f"           {x['url']}")
+        elif args.cmd == "gh-bounties":
+            res = github_bounties.list_bounties(min_usd=args.min, max_repos=args.max_repos,
+                                                verify=not args.no_verify)
+            if args.json:
+                print(json.dumps(res, indent=1))
+            else:
+                print(f"{res['returned']} bounties from {res['repos_seen']} repos "
+                      f"(seen {res['issues_seen']} issues) | auth={res['authenticated']}")
+                for x in res["bounties"]:
+                    print(f"  ${x['usd']:>7,.0f} via={x['usd_via']:<5} c={x['competition']:<3} "
+                          f"[{x.get('repo_verdict')}] {x['repo'][:32]:<32} {x['title'][:46]}")
+                    print(f"          {x['url']}")
+                for f in res["skipped_farms"]:
+                    print(f"  SKIPPED-FARM ${f['headline_pool_usd']:>8,.0f} {f['repo'][:40]:<42} {f['why'][:60]}")
+                for n in res["notes"]:
+                    print("note:", n)
+        elif args.cmd == "scan":
             r = scan_grants(min_reward_usd=args.min_reward, max_pages=args.max_pages)
             if args.json:
                 print(json.dumps(r, indent=1))
