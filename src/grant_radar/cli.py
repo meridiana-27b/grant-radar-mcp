@@ -93,12 +93,33 @@ def main(argv: list[str] | None = None) -> int:
     gb.add_argument("--min", type=float, default=100.0)
     gb.add_argument("--max-repos", type=int, default=12)
     gb.add_argument("--no-verify", action="store_true")
+    gb.add_argument("--check-claims", type=int, default=0,
+                    help="run the claimability check on the top N rows (expired/contested/blocked)")
     gb.add_argument("--json", action="store_true")
+
+    cc = sub.add_parser("claim-check", help="can an agent actually win this bounty issue?")
+    cc.add_argument("repo")
+    cc.add_argument("issue", type=int)
+    cc.add_argument("--no-policy", action="store_true", help="skip the AI-contribution policy scan")
+    cc.add_argument("--json", action="store_true")
 
     args = p.parse_args(argv)
 
     try:
-        if args.cmd == "radar":
+        if args.cmd == "claim-check":
+            from .claims import claim_check
+            r = claim_check(args.repo, args.issue, check_policy=not args.no_policy)
+            if args.json:
+                print(json.dumps(r, indent=1))
+            else:
+                print(f"{r.get('url') or args.repo + '#' + str(args.issue)}")
+                print(f"claimable = {r.get('claimable').upper()}")
+                if r.get("deadline"):
+                    print(f"deadline  = {r['deadline']}")
+                print(f"comments  = {r.get('comments')} | maintainer_engaged={r.get('maintainer_engaged')}")
+                for x in r.get("reasons") or []:
+                    print("  - " + x)
+        elif args.cmd == "radar":
             srcs = [s.strip() for s in args.sources.split(",") if s.strip()]
             res = scan_all(min_usd=args.min, sources=srcs, verify_github=not args.no_verify)
             if args.json:
@@ -133,16 +154,21 @@ def main(argv: list[str] | None = None) -> int:
                     print(f"           {x['url']}")
         elif args.cmd == "gh-bounties":
             res = github_bounties.list_bounties(min_usd=args.min, max_repos=args.max_repos,
-                                                verify=not args.no_verify)
+                                                verify=not args.no_verify,
+                                                check_claims=args.check_claims)
             if args.json:
                 print(json.dumps(res, indent=1))
             else:
                 print(f"{res['returned']} bounties from {res['repos_seen']} repos "
                       f"(seen {res['issues_seen']} issues) | auth={res['authenticated']}")
                 for x in res["bounties"]:
+                    cl = x.get("claimable")
+                    tag = f"[{x.get('repo_verdict')}/{cl}]" if cl else f"[{x.get('repo_verdict')}]"
                     print(f"  ${x['usd']:>7,.0f} via={x['usd_via']:<5} c={x['competition']:<3} "
-                          f"[{x.get('repo_verdict')}] {x['repo'][:32]:<32} {x['title'][:46]}")
+                          f"{tag:<16} {x['repo'][:30]:<30} {x['title'][:40]}")
                     print(f"          {x['url']}")
+                    for why in (x.get("claim_reasons") or [])[:2]:
+                        print(f"            ! {why[:100]}")
                 for f in res["skipped_farms"]:
                     print(f"  SKIPPED-FARM ${f['headline_pool_usd']:>8,.0f} {f['repo'][:40]:<42} {f['why'][:60]}")
                 for n in res["notes"]:

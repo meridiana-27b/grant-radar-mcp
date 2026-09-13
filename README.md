@@ -26,6 +26,27 @@ An agent that sorts by reward walks into the scams first. `grant-radar` scores t
 before ranking the **issue**, and returns rejected pools separately with the reason — so you can
 audit the filter instead of trusting it.
 
+## Second filter: is it actually winnable?
+A credible repo is still not a winnable bounty. `grant-radar claim-check` reads the four things
+bounty boards never put in a label — a deadline written in prose inside the issue body, material
+prerequisites the machine cannot provide, other workers already on the thread, and claim flows
+that live off-GitHub — plus repo policies on AI-generated pull requests.
+
+On its first run (2026-09-13) it took the 7 bounties that passed the credibility screen and found
+**none of them claimable**: one blocked on Tenstorrent silicon, one expired six days earlier,
+five contested. That is the difference between a radar and a leaderboard.
+
+```bash
+grant-radar claim-check tenstorrent/tt-metal 54014
+# claimable = BLOCKED
+#   - requires Tenstorrent Wormhole hardware
+#   - repo policy restricts AI-generated contributions: CONTRIBUTING.md: ai-generated
+
+grant-radar gh-bounties --min 100 --check-claims 8   # annotate the top rows, sort claimable first
+```
+Verdicts: `open` · `risky` · `needs-human` · `contested` · `blocked` · `expired` · `closed` · `unknown`
+(an issue we cannot read is `unknown`, never `open`).
+
 ## Install
 ```bash
 pip install "git+https://github.com/meridiana-27b/grant-radar-mcp"
@@ -37,6 +58,7 @@ pip install "git+https://github.com/meridiana-27b/grant-radar-mcp#[mcp]"   # + M
 grant-radar radar --min 100                 # everything, one ranked list (breadth)
 grant-radar watch --min 100                 # only what's NEW since last run (for schedulers)
 grant-radar gh-bounties --min 100           # GitHub bounties + repo credibility verdicts
+grant-radar claim-check <owner/repo> <n>    # can I actually win THIS issue?
 grant-radar scan --min-reward 1000          # Questbook grants currently accepting
 grant-radar detail <grantId>                # full RFP: fields, rubric, treasury status
 grant-radar summary <grantId>               # approved vs submitted — the "what wins" view
@@ -71,7 +93,10 @@ python -m grant_radar.mcp_server
 { "mcpServers": { "grant-radar": { "command": "python", "args": ["-m", "grant_radar.mcp_server"] } } }
 ```
 Tools: `scan_all_opportunities`, `watch_opportunities`, `github_bounties`, `repo_credibility`,
-`scan_grants`, `grant_detail`, `applications`, `competitive_summary`.
+`claim_check`, `scan_grants`, `grant_detail`, `applications`, `competitive_summary`.
+
+Recommended agent loop: `watch_opportunities` → `repo_credibility` → `claim_check` → only then
+write code. Each stage is cheap and each one has, in practice, eliminated most of the candidates.
 
 ## Optional auth (higher rate limits, never required)
 Read from the process environment — never put a token on a command line.
@@ -100,6 +125,7 @@ GRANT_RADAR_SUPERTEAM_TOKEN_FILE=~/.config/grant-radar/superteam.json
 ```bash
 python -m tests.test_core       # Questbook parsing + scan filtering (offline)
 python -m tests.test_sources    # $-extraction, credibility, scam-check regressions (offline)
+python -m tests.test_claims     # claimability: expired/blocked/contested/needs-human/risky (offline)
 ```
 
 ## Roadmap

@@ -245,7 +245,7 @@ def _auth(token: str | None) -> dict:
 
 def list_bounties(min_usd: float = 100.0, per_query: int = 100,
                   max_repos: int = 12, verify: bool = True,
-                  sleep: float = 2.6) -> dict:
+                  sleep: float = 2.6, check_claims: int = 0) -> dict:
     """Scan GitHub for open paid bounties and rank by reward-per-competition
     *within* repos that pass a credibility screen.
 
@@ -284,6 +284,7 @@ def list_bounties(min_usd: float = 100.0, per_query: int = 100,
                 "created": str(it.get("created_at") or "")[:10],
                 "updated": str(it.get("updated_at") or "")[:10],
                 "labels": [l.get("name") for l in (it.get("labels") or [])][:8],
+                "issue": int(url.rsplit("/", 1)[-1]) if url.rsplit("/", 1)[-1].isdigit() else None,
                 "next_step": "read the issue, comment to claim, submit a PR; paid on merge",
             }
 
@@ -314,6 +315,14 @@ def list_bounties(min_usd: float = 100.0, per_query: int = 100,
             ranked.append(r)
 
     ranked.sort(key=lambda r: -r["score"])
+
+    if check_claims:
+        # Second filter: a real repo is still not a winnable bounty. Cheap enough
+        # to run on the top rows only (see claims.py for what it catches).
+        from ..claims import annotate
+        annotate(ranked, token=token, limit=check_claims)
+        ranked.sort(key=lambda r: (RANK_ORDER.get(r.get("claimable"), 1), -r["score"]))
+
     return {
         "source": "github",
         "scanned_at": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
@@ -324,8 +333,14 @@ def list_bounties(min_usd: float = 100.0, per_query: int = 100,
         "bounties": ranked,
         "skipped_farms": skipped,
         "notes": notes,
-        "hint": "headline pool size is NOT trust; the skipped_farms list is the point.",
+        "hint": "headline pool size is NOT trust; the skipped_farms list is the point. "
+                "And 'real repo' is NOT 'claimable' - run check_claims on the top rows.",
     }
+
+
+# claimable -> sort priority (lower first)
+RANK_ORDER = {"open": 0, "unknown": 1, "needs-human": 2, "risky": 3,
+              "contested": 4, "blocked": 5, "expired": 6, "closed": 7}
 
 
 def _why_farm(h: dict) -> str:

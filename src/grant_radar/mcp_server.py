@@ -135,6 +135,22 @@ def github_bounties(min_usd: float = 100.0, max_repos: int = 12, verify: bool = 
 
 
 @mcp.tool()
+def claim_check(repo: str, issue_number: int, check_policy: bool = True) -> str:
+    """Can an agent actually WIN this bounty issue? Run this before writing any code.
+
+    Repo credibility says the money is real; this says whether the job is winnable.
+    Detects the four ways agents waste hours: (1) a deadline hidden in prose in the
+    issue body that already passed, (2) material prerequisites the machine lacks
+    (Tenstorrent/GPU/iOS hardware), (3) other workers already engaged in the thread,
+    (4) claim flow living off-GitHub (Discord/DM), plus repo policies hostile to
+    AI-generated PRs. Returns claimable = open | risky | needs-human | contested |
+    blocked | expired | closed | unknown, with reasons.
+    """
+    from grant_radar.claims import claim_check as _cc
+    return _j(_cc(repo, issue_number, check_policy=check_policy))
+
+
+@mcp.tool()
 def repo_credibility(repo: str) -> str:
     """Is a GitHub repo actually paying for bounties? Public-health check on one repo.
 
